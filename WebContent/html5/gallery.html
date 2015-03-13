@@ -1,0 +1,270 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+<link href="../css/reset.css" type="text/css" rel="stylesheet" />
+<style>
+	.gallery{
+		width:500px;
+		height: 400px;
+		border:1px solid #000;
+	}
+	.gallery-show-box{
+		width:100%;
+		height:300px;
+		background: #828282;
+		overflow: hidden;
+	}
+	
+	.gallery-show-box > img {
+	    display:block;
+	    margin-top:25px;
+	    margin-left:auto;
+	    margin-right:auto;
+	    height:250px;
+	    transform:rotate(0deg);
+	}
+	
+	.gallery-show-box > img:hover {
+	    display:block;
+	    margin-top:25px;
+	    margin-left:auto;
+	    margin-right:auto;
+	    height:250px;
+	    transform:rotate(7.5deg);
+	}
+	
+	.gallery-pic-box{
+		width:100%;
+		height: 100px;
+		background: #000;
+	}
+	.gallery-pic-list{
+		height: 100%;
+		position: absolute;
+		left:0px;
+		top:0px;
+		display: inline-block;
+		border:1px solid red;
+		width: 2000px;
+	}
+	
+	.gallery-pic-clipper{
+		position:relative;
+		width:450px;
+		height: 100%;
+		float:left;
+		overflow: hidden;
+	}
+	
+	.gallery-pic-item{
+		float:left;
+		height: 100%;
+		width:80px;
+		border: 1px solid #ffffff;				
+	}
+	
+	
+	.gallery-pic{		
+		height: 100%;
+		width:100%;			
+	}
+	
+	.gallery-prev-button{
+		width:25px;
+		height: 100%;
+		float:left;
+		background: pink;
+	}
+	.gallery-next-button{
+		width:25px;
+		height: 100%;
+		float:left;
+		background: pink;
+	}
+	
+	.gallery-file {
+	    display:none;
+	}
+	
+
+</style>
+<script>
+	function picClick(){
+		//alert(event.currentTarget.tagName);				
+		
+		var img = document.createElement("img");		
+		img.src = event.target.src;
+		img.style.height = "100px";
+		
+		//var box = document.getElementById("gallery-show-box");
+		var box = document.querySelector(".gallery-show-box");
+		
+		var last;
+		while (last = box.lastChild) 
+			box.removeChild(last);	
+
+		box.appendChild(img);
+		
+		animate(img, "height", "250px", 1000, linear);
+		
+		event.preventDefault();
+	}
+	
+	window.addEventListener("load", function(){
+		//var pic1 = document.getElementById("gallery-pic1");
+		//var pics = document.getElementById("gallery-pic-list");
+		
+		var pic1 = document.querySelector("#gallery-pic1");
+		var pics = document.querySelector("#gallery-pic-list");
+		/* pic1.onclick = picClick;
+		pics.onclick = picClick; */
+		pic1.addEventListener("click", picClick, false);
+		pics.addEventListener("click", picClick, false);
+		
+		pics.style.left = 0;
+
+        var prevBtn = document.querySelector(".gallery-prev-button");
+        var nextBtn = document.querySelector(".gallery-next-button");
+
+        prevBtn.addEventListener("click", function () {
+        	animate(pics, "left", "-120px", 2000, aa);
+
+        });
+		
+		nextBtn.addEventListener("click", function(){
+			animate(pics, "left", "120px", 3000, linear);
+		});
+		
+		/* var pic1 = document.getElementById("gallery-pic1");
+		var pic2 = document.getElementById("gallery-pic2");
+		var pic3 = document.getElementById("gallery-pic3");
+		
+		pic1.onclick = picClick;
+		pic2.onclick = picClick;
+		pic3.onclick = picClick; */
+		
+		/* pic1.onclick = function(){
+			var img = document.createElement("img");
+			img.src = "pic1.jpg";
+			
+			var box = document.getElementById("gallery-show-box");
+			
+			var last;
+			while (last = box.lastChild) 
+				box.removeChild(last);	
+
+			box.appendChild(img);
+		}
+		
+		pic2.onclick = function(){
+			var img = document.createElement("img");
+			img.src = "pic2.jpg";
+			
+			var box = document.getElementById("gallery-show-box");
+			
+			var last;
+			while (last = box.lastChild) 
+				box.removeChild(last);
+
+			box.appendChild(img);
+		}
+		
+		pic3.onclick = function(){
+			var img = document.createElement("img");
+			img.src = "pic3.jpg";
+			
+			var box = document.getElementById("gallery-show-box");
+			
+			var last;
+			while (last = box.lastChild) 
+				box.removeChild(last);
+			
+			box.appendChild(img);
+		} */
+	}); 
+	
+	function animate(target, property, to, duration, easing, callback) {
+	    if (target.style[property] == "")
+	        target.style[property] = "0px";
+
+	    var from = parseInt(target.style[property]);
+	    var to = parseInt(to);
+	    //to = to + from;
+	    var start = new Date;
+
+	    var id = setInterval(function () {                    
+	        var timePassed = new Date - start;
+	        var progress = timePassed / duration; // 0 < progress < 1  진척율
+
+	        if (progress > 1) progress = 1;
+
+	        if(easing) target.style[property] = (from + (to-from) * easing(progress)) + "px";
+	        else target.style[property] = (from + (to-from) * progress) + "px";
+
+
+	        if (progress == 1)  {
+	        	clearInterval(id);
+	        	
+	        	if(callback)
+	        		callback();
+	        }
+	                    
+	    }, 10);
+	};
+
+	function aa(progress){ 
+       return Math.pow(progress, 2); 
+    }
+	
+	function linear(progress){ 
+       return progress; 
+    }
+
+
+	
+	
+</script>
+</head>
+<body>
+	<div class="gallery">
+		<div class="gallery-show-box">
+		</div>
+		<div class="gallery-pic-box">
+			<div class="gallery-prev-button">◀</div>
+			<div class="gallery-pic-clipper">
+				<ul id="gallery-pic-list" class="gallery-pic-list">
+					<li class="gallery-pic-item"><a href="http://www.naver.com" id="gallery-pic1"><img class="gallery-pic" src="pic1.jpg" /></a></li>
+					<li class="gallery-pic-item"><img class="gallery-pic" id="gallery-pic2" src="pic2.jpg" /></li>
+					<li class="gallery-pic-item"><img class="gallery-pic" id="gallery-pic3" src="pic3.jpg" /></li>
+					<li class="gallery-pic-item"><a href="http://www.naver.com" id="gallery-pic1"><img class="gallery-pic" src="pic1.jpg" /></a></li>
+					<li class="gallery-pic-item"><img class="gallery-pic" id="gallery-pic2" src="pic2.jpg" /></li>
+					<li class="gallery-pic-item"><img class="gallery-pic" id="gallery-pic3" src="pic3.jpg" /></li>
+					<li class="gallery-pic-item"><a href="http://www.naver.com" id="gallery-pic1"><img class="gallery-pic" src="pic1.jpg" /></a></li>
+					<li class="gallery-pic-item"><img class="gallery-pic" id="gallery-pic2" src="pic2.jpg" /></li>
+					<li class="gallery-pic-item"><img class="gallery-pic" id="gallery-pic3" src="pic3.jpg" /></li>
+					<li class="gallery-pic-item"><a href="http://www.naver.com" id="gallery-pic1"><img class="gallery-pic" src="pic1.jpg" /></a></li>
+					<li class="gallery-pic-item"><img class="gallery-pic" id="gallery-pic2" src="pic2.jpg" /></li>
+					<li class="gallery-pic-item"><img class="gallery-pic" id="gallery-pic3" src="pic3.jpg" /></li>
+					<li class="gallery-pic-item"><a href="http://www.naver.com" id="gallery-pic1"><img class="gallery-pic" src="pic1.jpg" /></a></li>
+					<li class="gallery-pic-item"><img class="gallery-pic" id="gallery-pic2" src="pic2.jpg" /></li>
+					<li class="gallery-pic-item"><img class="gallery-pic" id="gallery-pic3" src="pic3.jpg" /></li>
+					<li class="gallery-pic-item"><a href="http://www.naver.com" id="gallery-pic1"><img class="gallery-pic" src="pic1.jpg" /></a></li>
+					<li class="gallery-pic-item"><img class="gallery-pic" id="gallery-pic2" src="pic2.jpg" /></li>
+					<li class="gallery-pic-item"><img class="gallery-pic" id="gallery-pic3" src="pic3.jpg" /></li>
+					<li class="gallery-pic-item"><a href="http://www.naver.com" id="gallery-pic1"><img class="gallery-pic" src="pic1.jpg" /></a></li>
+					<li class="gallery-pic-item"><img class="gallery-pic" id="gallery-pic2" src="pic2.jpg" /></li>
+					<li class="gallery-pic-item"><img class="gallery-pic" id="gallery-pic3" src="pic3.jpg" /></li>
+				</ul>
+			</div>
+			<div class="gallery-next-button">▶</div>
+		</div>
+	</div>
+	<div>
+	    <input type="file" id="gallery-file" class="gallery-file" />
+	    <span id="file-button" class="file-button">파일선택</span>
+	</div>
+	
+</body>
+</html>

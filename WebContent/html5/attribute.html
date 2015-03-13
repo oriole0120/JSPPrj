@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+</head>
+<body>
+	<script>
+    function changeImage()
+    {
+   		var txt1 = document.getElementById("txt1");
+      	var img1 = document.getElementById("img1");
+      	var txtBorder = document.getElementById("txt-border");
+      	img1.src = txt1.value;
+      	img1.style.borderWidth=txtBorder.value;
+    }
+   	</script>
+	<form>
+		<input id="txt1" /> <input type="button" onclick="changeImage();" value="변경" />
+		<img id="img1" src="pic1.jpg" style="border:5px solid #ff0000;" />
+	</form>
+	<input id="txt-border" />
+
+</body>
+</html>

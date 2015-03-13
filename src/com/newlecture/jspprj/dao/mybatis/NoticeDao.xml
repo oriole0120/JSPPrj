@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+    PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.newlecture.jspprj.dao.NoticeDao">
+	<!-- <select id="getNotice" 
+		parameterType="String" 
+		resultType="com.newlecture.jspprj.model.Notice">
+		
+		SELECT * FROM NOTICES WHERE CODE=#{code}
+		
+	</select> -->
+	
+	<!-- <select id="prevNotice" parameterType="String" resultType="com.newlecture.jspprj.model.Notice">
+		SELECT TOP 1 * FROM NOTICES
+		WHERE REGDATE &gt; (SELECT REGDATE FROM NOTICES WHERE CODE=#{curCode})
+		ORDER BY REGDATE ASC
+	</select>
+	
+	<select id="nextNotice" parameterType="String" resultType="com.newlecture.jspprj.model.Notice">
+		SELECT TOP 1 * FROM NOTICES
+		WHERE REGDATE &lt; (SELECT REGDATE FROM NOTICES WHERE CODE=#{curCode})
+		ORDER BY REGDATE DESC
+	</select> -->
+	<!-- <select id="getNotices" resultType="com.newlecture.jspprj.model.Notice">
+		SELECT N.* FROM(
+			SELECT (
+				ROW_NUMBER() OVER (ORDER BY REGDATE DESC)
+			)NUM, Notices.*	FROM NOTICES WHERE ${param3} LIKE '%${param2}%' M
+		) N 
+		WHERE N.NUM BETWEEN 1+(#{param1}-1)*20 AND 20+(#{param1}-1)*20
+	</select> -->
+	<!-- <select id="getNotices"></select>
+	<select id="getNotices"></select> -->
+	<insert id="insert" parameterType="com.newlecture.jspprj.model.Notice">
+		<selectKey keyColumn="code" resultType="String" order="BEFORE">
+			SELECT ISNULL(MAX(CAST(CODE AS INT)),0)+1 Code FROM Notices	
+		</selectKey>		
+		
+		INSERT INTO NOTICES(CODE, TITLE, WRITER, CONTENT, REGDATE, HIT) 
+		VALUES(#{code},#{title},#{writer},#{content},GETDATE(),0)		
+	</insert>
+	<update id="update" parameterType="com.newlecture.jspprj.model.Notice">
+		UPDATE NOTICES SET TITLE=#{title}, CONTENT=#{content} WHERE CODE=#{code}
+	</update>
+	<delete id="delete" parameterType="String">
+		DELETE NOTICES WHERE CODE=#{code}
+	</delete>
+	<select id="getSize" resultType="int">		
+		SELECT COUNT(*) CNT FROM NOTICES WHERE ${param2} LIKE #{param1}
+	</select>
+	<!-- <select id="getSize">
+	</select> -->
+	<select id="lastCode" resultType="com.newlecture.jspprj.model.Notice">
+		SELECT ISNULL(MAX(CAST(CODE AS INT)),0) Code FROM Notices
+	</select>
+	
+	<!-- public Notice getNotice(String code);	
+	public Notice prevNotice(String curCode);
+	public Notice nextNotice(String curCode);
+	public List<Notice> getNotices(int page, String query, String field);
+	public List<Notice> getNotices(int page, String query);
+	public List<Notice> getNotices(int page);
+	public int insert(Notice notice);
+	public int update(Notice notice);
+	public int delete(String code);
+	public int getSize(String query, String field);
+	public int getSize(String query);
+	public String lastCode(); -->
+	
+	
+</mapper>

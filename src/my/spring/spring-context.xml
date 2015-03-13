@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans	
+http://www.springframework.org/schema/beans/spring-beans.xsd
+http://www.springframework.org/schema/context
+	http://www.springframework.org/schema/context/spring-context.xsd">
+	<context:annotation-config />
+	
+	<bean id="noticeDao" class="com.newlecture.jspprj.dao.mybatis.MyBNoticeDao" />
+	<bean id="view" class="my.spring.NoticeView">
+		<property name="noticeDao" ref="noticeDao"></property>
+	</bean>
+	
+	<!-- Exam exam = new Exam(); -->
+	<bean id="exam" class="my.spring.Exam">
+		<constructor-arg name="eng" type="float" value="30" />
+		<constructor-arg name="kor" type="float" value="60" />
+		<constructor-arg name="math" type="float" value="90" />
+		<!-- 
+		exam.setKor(20);
+		exam.setEng(50);
+		exam.setMath(80);		 
+		-->
+		<!-- <property name="kor" value="20" />
+		<property name="eng" value="50" />
+		<property name="math">
+			<value>80</value>
+		</property> -->
+	</bean>
+	
+	<!--
+		List<Exam> exams = new ArrayList<Exam>();
+		exams.add(new Exam(10,10,10));
+		exams.add(new Exam(20,20,20));
+		
+		ExamManager mng = new ExamManager();
+		mng.setExams(exams);
+	 -->
+	<bean id="exams" class="java.util.ArrayList">				
+		<constructor-arg>
+			<list>
+				<bean class="my.spring.Exam">
+					<constructor-arg value="10" />
+					<constructor-arg value="10" />
+					<constructor-arg value="10" />
+				</bean>
+				<bean class="my.spring.Exam">
+					<constructor-arg value="20" />
+					<constructor-arg value="20" />
+					<constructor-arg value="20" />
+				</bean>
+			</list>
+		</constructor-arg>
+	</bean>
+	<bean id="mng" class="my.spring.ExamManager">
+		<!-- <property name="exams" ref="exams" /> -->
+	</bean>
+	
+</beans>
+
+
+
+
+
+
+
+
+

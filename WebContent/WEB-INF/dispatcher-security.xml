@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans:beans xmlns:beans="http://www.springframework.org/schema/beans"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns="http://www.springframework.org/schema/security"	
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans	
+	http://www.springframework.org/schema/beans/spring-beans.xsd
+	http://www.springframework.org/schema/context
+	http://www.springframework.org/schema/context/spring-context.xsd
+	http://www.springframework.org/schema/security
+	http://www.springframework.org/schema/security/spring-security.xsd
+	">
+	<!-- 보안 라이브러리 설정 -->
+	<http>
+		<form-login login-page="/joinus/login.htm" default-target-url="/index.htm"/>
+		<logout logout-success-url="/index.htm" />
+		<intercept-url pattern="/customer/noticeReg.htm" access="ROLE_ADMIN"/>
+	</http>
+	<authentication-manager>
+		<authentication-provider>
+			<jdbc-user-service data-source-ref="dataSource" 
+				users-by-username-query="
+					SELECT MID USERID, PWD PASSWORD, 1 ENABLED 
+					FROM MEMBERS WHERE MID=?"
+				authorities-by-username-query="
+					SELECT MID USERID, 'ROLE_USER' AUTHORITIES 
+					FROM MEMBERS WHERE MID=?"/>
+			
+			
+			<!-- <user-service>
+				<user name="newlec" password="111"
+					authorities="ROLE_USER, ROLE_TEACHER, ROLE_ADMIN"/>
+				<user name="dragon" password="111"
+					authorities="ROLE_USER"/>
+			</user-service> -->
+		</authentication-provider>
+	</authentication-manager>
+	
+</beans:beans>
+

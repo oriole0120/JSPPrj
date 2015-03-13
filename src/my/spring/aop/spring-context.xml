@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:context="http://www.springframework.org/schema/context"	
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans	
+	http://www.springframework.org/schema/beans/spring-beans.xsd
+	http://www.springframework.org/schema/context
+	http://www.springframework.org/schema/context/spring-context.xsd">
+	<context:annotation-config />	
+	
+	<bean id="noticeReal"
+		class="com.newlecture.jspprj.dao.jdbc.JdbcNoticeDao" />
+	
+	<bean id="logAroundAdvice"
+		class="my.spring.aop.LogAroundAdvice"></bean>
+	<bean id="authBeforeAdvice"
+		class="my.spring.aop.AuthBeforeAdvice"></bean>
+		
+	<bean id="pointCut"
+		class="org.springframework.aop.support.NameMatchMethodPointcut">
+		<property name="mappedNames">
+			<list>
+				<value>getNotices</value>
+				<value>getSize</value>
+			</list>
+		</property>
+	</bean>
+	
+	<bean id="logAdvisor" class="org.springframework.aop.support.DefaultPointcutAdvisor">
+		<property name="pointcut" ref="pointCut" />
+		<property name="advice" ref="logAroundAdvice" />
+	</bean>
+	
+	<bean id="noticeDao"
+		class="org.springframework.aop.framework.ProxyFactoryBean">
+		<property name="target" ref="noticeReal"></property>
+		<property name="interceptorNames">
+			<list>
+				<!-- <value>logAroundAdvice</value> -->
+				<value>logAdvisor</value>	
+				<value>authBeforeAdvice</value>			
+			</list>
+		</property>
+	</bean>
+	
+</beans>
+
+
+
+
+
+
+
+
+

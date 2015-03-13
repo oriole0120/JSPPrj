@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:security="http://www.springframework.org/schema/security"	
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans	
+	http://www.springframework.org/schema/beans/spring-beans.xsd
+	http://www.springframework.org/schema/context
+	http://www.springframework.org/schema/context/spring-context.xsd
+	http://www.springframework.org/schema/security
+	http://www.springframework.org/schema/security/spring-security.xsd
+	">
+	
+	<!-- 데이터 서비스 설정 -->
+	<bean id="dataSource" class="org.springframework.jdbc.datasource.DriverManagerDataSource">
+		<property name="driverClassName" value="com.microsoft.sqlserver.jdbc.SQLServerDriver"></property>
+	    <property name="url" value="jdbc:sqlserver://win.newlecture.com:1433;database=newlecdb"></property>
+	    <property name="username" value="sist"></property>
+	    <property name="password" value="newlec"></property>
+	</bean>
+	
+	<bean id="noticeDao"
+		class="com.newlecture.jspprj.dao.jdbc.JdbcNoticeDao" />
+	
+	
+	<!-- <bean name="/customer/notice.htm" class="com.newlecture.jspprj.controller.NoticeController"></bean> -->
+	
+</beans>
